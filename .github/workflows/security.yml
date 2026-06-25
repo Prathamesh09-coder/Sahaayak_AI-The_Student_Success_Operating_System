@@ -1,0 +1,28 @@
+name: Security Audit
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Run weekly
+  workflow_dispatch:
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.12"
+
+    - name: Python Security Audit (Bandit & pip-audit)
+      working-directory: ./backend
+      run: |
+        pip install bandit pip-audit
+        bandit -r app/
+        pip-audit -r requirements.txt || true
+
+    - name: Node Security Audit
+      working-directory: ./frontend
+      run: npm audit || true

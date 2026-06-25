@@ -1,0 +1,46 @@
+# Node
+node_modules/
+dist/
+.npm
+.eslintcache
+*.log
+frontend/node_modules/
+frontend/dist/
+
+# Python
+venv/
+.venv/
+backend/venv/
+backend/.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# Databases
+*.db
+*.sqlite
+chroma_db/
+backend/chroma_db/
+neo4j/data/
+
+# Environments
+.env
+.env.*
+!.env.example
+backend/.env
+frontend/.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+.gemini/
+.agents/
