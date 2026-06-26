@@ -1,44 +1,48 @@
-import redis.asyncio as redis
-import os
 import json
 from typing import List, Dict, Any, Optional
+import time
 
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
-redis_client = redis.from_url(REDIS_URL, decode_responses=True)
+_cache = {}
 
 TTL_24_HOURS = 86400
 
 async def store_recent_message(conversation_id: str, message: Dict[str, Any]):
     key = f"chat:{conversation_id}:messages"
-    await redis_client.rpush(key, json.dumps(message))
-    await redis_client.expire(key, TTL_24_HOURS)
+    if key not in _cache:
+        _cache[key] = {"data": [], "expires": time.time() + TTL_24_HOURS}
+    _cache[key]["data"].append(message)
+    _cache[key]["expires"] = time.time() + TTL_24_HOURS
     
-    # Cap list to last 50 messages to avoid runaway memory
-    await redis_client.ltrim(key, -50, -1)
+    # Cap list to last 50 messages
+    _cache[key]["data"] = _cache[key]["data"][-50:]
 
 async def get_recent_messages(conversation_id: str) -> List[Dict[str, Any]]:
     key = f"chat:{conversation_id}:messages"
-    messages = await redis_client.lrange(key, 0, -1)
-    return [json.loads(m) for m in messages] if messages else []
+    if key in _cache and _cache[key]["expires"] > time.time():
+        return _cache[key]["data"]
+    return []
 
 async def store_summary(conversation_id: str, summary: str):
     key = f"chat:{conversation_id}:summary"
-    await redis_client.set(key, summary, ex=TTL_24_HOURS)
+    _cache[key] = {"data": summary, "expires": time.time() + TTL_24_HOURS}
 
 async def get_summary(conversation_id: str) -> Optional[str]:
     key = f"chat:{conversation_id}:summary"
-    return await redis_client.get(key)
+    if key in _cache and _cache[key]["expires"] > time.time():
+        return _cache[key]["data"]
+    return None
 
 async def cache_context(student_id: str, context: Dict[str, Any]):
     key = f"student:{student_id}:context"
-    await redis_client.set(key, json.dumps(context), ex=TTL_24_HOURS)
+    _cache[key] = {"data": context, "expires": time.time() + TTL_24_HOURS}
 
 async def get_cached_context(student_id: str) -> Optional[Dict[str, Any]]:
     key = f"student:{student_id}:context"
-    data = await redis_client.get(key)
-    return json.loads(data) if data else None
+    if key in _cache and _cache[key]["expires"] > time.time():
+        return _cache[key]["data"]
+    return None
 
 async def invalidate_context_cache(student_id: str):
     key = f"student:{student_id}:context"
-    await redis_client.delete(key)
-
+    if key in _cache:
+        del _cache[key]

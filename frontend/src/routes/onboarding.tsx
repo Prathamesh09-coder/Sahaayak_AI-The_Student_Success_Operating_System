@@ -41,37 +41,63 @@ type FormData = z.infer<typeof formSchema>;
 // ─── Step Definitions ────────────────────────────────────────────────────────
 
 const STEPS = [
-  { key: "intro",     title: "Welcome to Sahaayak" },
-  { key: "personal",  title: "About you" },
-  { key: "language",  title: "Your language" },
-  { key: "family",    title: "Family background" },
-  { key: "academic",  title: "Academic life" },
-  { key: "career",    title: "Career dreams" },
+  { key: "intro", title: "Welcome to Sahaayak" },
+  { key: "personal", title: "About you" },
+  { key: "language", title: "Your language" },
+  { key: "family", title: "Family background" },
+  { key: "academic", title: "Academic life" },
+  { key: "career", title: "Career dreams" },
   { key: "interests", title: "Interests & skills" },
-  { key: "done",      title: "All set" },
+  { key: "done", title: "All set" },
 ];
 
 const INCOME_OPTIONS = [
-  { key: "below-3l",  label: "Below ₹3L",     value: 200000 },
-  { key: "3-6l",      label: "₹3L – ₹6L",     value: 450000 },
-  { key: "6-12l",     label: "₹6L – ₹12L",    value: 800000 },
-  { key: "12l+",      label: "Above ₹12L",    value: 1500000 },
-  { key: "skip",      label: "Prefer not to say", value: 0 },
+  { key: "below-3l", label: "Below ₹3L", value: 200000 },
+  { key: "3-6l", label: "₹3L – ₹6L", value: 450000 },
+  { key: "6-12l", label: "₹6L – ₹12L", value: 800000 },
+  { key: "12l+", label: "Above ₹12L", value: 1500000 },
+  { key: "skip", label: "Prefer not to say", value: 0 },
 ];
 
 const LANGUAGES = [
-  "English", "हिन्दी", "தமிழ்", "తెలుగు", "বাংলা",
-  "मराठी", "ગુજરાતી", "ಕನ್ನಡ", "മലയാളം", "ਪੰਜਾਬੀ", "ଓଡ଼ିଆ", "اردو",
+  "English",
+  "हिन्दी",
+  "தமிழ்",
+  "తెలుగు",
+  "বাংলা",
+  "मराठी",
+  "ગુજરાતી",
+  "ಕನ್ನಡ",
+  "മലയാളം",
+  "ਪੰਜਾਬੀ",
+  "ଓଡ଼ିଆ",
+  "اردو",
 ];
 
 const CAREERS = [
-  "Software Engineering", "Data Science", "Civil Services", "Medicine",
-  "Design", "Teaching", "Business", "Research", "Law", "Finance",
+  "Software Engineering",
+  "Data Science",
+  "Civil Services",
+  "Medicine",
+  "Design",
+  "Teaching",
+  "Business",
+  "Research",
+  "Law",
+  "Finance",
 ];
 
 const INTERESTS = [
-  "Coding", "Writing", "Math", "Sports", "Music",
-  "Public speaking", "Art", "Volunteering", "Languages", "Entrepreneurship",
+  "Coding",
+  "Writing",
+  "Math",
+  "Sports",
+  "Music",
+  "Public speaking",
+  "Art",
+  "Volunteering",
+  "Languages",
+  "Entrepreneurship",
 ];
 
 const YEAR_OPTIONS = ["1st year", "2nd year", "3rd year", "4th year", "PG"];
@@ -84,23 +110,28 @@ function Onboarding() {
   const [loading, setLoading] = useState(false);
   const invalidateUser = useInvalidateUser();
 
-  const { control, handleSubmit, watch, setValue, formState: { errors } } =
-    useForm<FormData>({
-      resolver: zodResolver(formSchema),
-      defaultValues: {
-        name: "",
-        age: 18,
-        language: "English",
-        firstGen: true,
-        income: "below-3l",
-        college: "",
-        branch: "",
-        year: "1st year",
-        cgpa: 0,
-        careers: [],
-        interests: [],
-      },
-    });
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      age: 18,
+      language: "English",
+      firstGen: true,
+      income: "below-3l",
+      college: "",
+      branch: "",
+      year: "1st year",
+      cgpa: 0,
+      careers: [],
+      interests: [],
+    },
+  });
 
   // Resume from last saved step
   useEffect(() => {
@@ -137,8 +168,11 @@ function Onboarding() {
         });
       } else if (step === 4) {
         const yearMap: Record<string, number> = {
-          "1st year": 1, "2nd year": 2, "3rd year": 3,
-          "4th year": 4, "PG": 5,
+          "1st year": 1,
+          "2nd year": 2,
+          "3rd year": 3,
+          "4th year": 4,
+          PG: 5,
         };
         await OnboardingAPI.saveAcademic({
           college: data.college,
@@ -220,7 +254,10 @@ function Onboarding() {
         <div className="mt-5 h-1.5 w-full overflow-hidden rounded-full bg-muted/60">
           <div
             className="h-full rounded-full transition-[width] duration-500"
-            style={{ width: `${progress}%`, background: "var(--gradient-primary)" }}
+            style={{
+              width: `${progress}%`,
+              background: "var(--gradient-primary)",
+            }}
           />
         </div>
 
@@ -272,7 +309,9 @@ function Onboarding() {
                     )}
                   />
                   {errors.name && (
-                    <p className="text-xs text-destructive">{errors.name.message}</p>
+                    <p className="text-xs text-destructive">
+                      {errors.name.message}
+                    </p>
                   )}
                 </Field>
                 <Field label="Age">
@@ -505,7 +544,13 @@ function Onboarding() {
 
 // ─── Shared helpers ───────────────────────────────────────────────────────────
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="space-y-1.5">
       <Label>{label}</Label>

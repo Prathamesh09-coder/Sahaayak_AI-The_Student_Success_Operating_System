@@ -134,10 +134,22 @@ export function GoogleButton() {
   return (
     <Button variant="outline" className="h-11 w-full rounded-xl">
       <svg viewBox="0 0 48 48" className="size-4">
-        <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.4 29.3 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.4 1 7.4 2.7l5.7-5.7C33.7 6.9 29.1 5 24 5 13.5 5 5 13.5 5 24s8.5 19 19 19 19-8.5 19-19c0-1.2-.1-2.3-.4-3.5z" />
-        <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c2.8 0 5.4 1 7.4 2.7l5.7-5.7C33.7 6.9 29.1 5 24 5 16.3 5 9.6 9.3 6.3 14.7z" />
-        <path fill="#4CAF50" d="M24 43c5.1 0 9.7-1.9 13.2-5.1l-6.1-5c-2 1.4-4.5 2.1-7.1 2.1-5.3 0-9.7-2.6-11.3-7l-6.5 5C9.4 38.7 16.1 43 24 43z" />
-        <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4-4 5.4l6.1 5c2.6-2.4 4.6-6 5.6-9.9.4-1.4.4-2.7.4-4 0-1.2-.1-2.3-.4-3.5z" />
+        <path
+          fill="#FFC107"
+          d="M43.6 20.5H42V20H24v8h11.3C33.7 32.4 29.3 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.4 1 7.4 2.7l5.7-5.7C33.7 6.9 29.1 5 24 5 13.5 5 5 13.5 5 24s8.5 19 19 19 19-8.5 19-19c0-1.2-.1-2.3-.4-3.5z"
+        />
+        <path
+          fill="#FF3D00"
+          d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c2.8 0 5.4 1 7.4 2.7l5.7-5.7C33.7 6.9 29.1 5 24 5 16.3 5 9.6 9.3 6.3 14.7z"
+        />
+        <path
+          fill="#4CAF50"
+          d="M24 43c5.1 0 9.7-1.9 13.2-5.1l-6.1-5c-2 1.4-4.5 2.1-7.1 2.1-5.3 0-9.7-2.6-11.3-7l-6.5 5C9.4 38.7 16.1 43 24 43z"
+        />
+        <path
+          fill="#1976D2"
+          d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4-4 5.4l6.1 5c2.6-2.4 4.6-6 5.6-9.9.4-1.4.4-2.7.4-4 0-1.2-.1-2.3-.4-3.5z"
+        />
       </svg>
       Continue with Google
     </Button>
@@ -209,7 +221,9 @@ export function SignInForm() {
         {loading ? (
           <Loader2 className="size-4 animate-spin" />
         ) : (
-          <>Sign in <ArrowRight className="size-4" /></>
+          <>
+            Sign in <ArrowRight className="size-4" />
+          </>
         )}
       </PrimaryButton>
       <div className="relative my-2 text-center">
@@ -287,7 +301,9 @@ export function SignUpForm() {
         {loading ? (
           <Loader2 className="size-4 animate-spin" />
         ) : (
-          <>Create account <ArrowRight className="size-4" /></>
+          <>
+            Create account <ArrowRight className="size-4" />
+          </>
         )}
       </PrimaryButton>
       <div className="relative my-2 text-center">

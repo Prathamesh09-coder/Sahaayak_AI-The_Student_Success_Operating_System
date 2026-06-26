@@ -1,21 +1,18 @@
-from celery import Celery
-import os
-from app.core.config import settings
+# Mock celery app to replace actual Celery for simplified synchronous execution
+class MockCeleryApp:
+    def task(self, *args, **kwargs):
+        bind = kwargs.get('bind', False)
+        def decorator(func):
+            def delay(*a, **kw):
+                # Execute synchronously
+                if bind:
+                    class DummyTask:
+                        def retry(self, exc=None):
+                            raise exc if exc else Exception("Task Retry")
+                    return func(DummyTask(), *a, **kw)
+                return func(*a, **kw)
+            func.delay = delay
+            return func
+        return decorator
 
-# In docker, REDIS_URL will come from environment variables.
-# For local dev fallback, we use default localhost.
-redis_url = os.getenv("REDIS_URL", "redis://localhost:6379")
-
-celery_app = Celery(
-    "worker",
-    broker=redis_url,
-    backend=redis_url
-)
-
-celery_app.conf.task_routes = {
-    "app.workers.celery_worker.test_task": "main-queue"
-}
-
-@celery_app.task(acks_late=True)
-def test_task(word: str) -> str:
-    return f"Test task executed with word: {word}"
+celery_app = MockCeleryApp()

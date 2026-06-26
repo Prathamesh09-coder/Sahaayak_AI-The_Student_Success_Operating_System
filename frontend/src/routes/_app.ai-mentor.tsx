@@ -63,7 +63,9 @@ interface Conversation {
 function AIMentor() {
   const { user, student, isLoading } = useUser();
   const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
+  const [activeConversationId, setActiveConversationId] = useState<
+    string | null
+  >(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -178,9 +180,13 @@ function AIMentor() {
       ws.current.readyState === WebSocket.OPEN &&
       wsConversationId.current &&
       (wsConversationId.current === activeConversationId ||
-        (!activeConversationId.startsWith("new_") && wsConversationId.current.startsWith("new_")))
+        (!activeConversationId.startsWith("new_") &&
+          wsConversationId.current.startsWith("new_")))
     ) {
-      console.log("Suppressing WS reconnect during conversation ID resolution", activeConversationId);
+      console.log(
+        "Suppressing WS reconnect during conversation ID resolution",
+        activeConversationId,
+      );
       wsConversationId.current = activeConversationId;
       return;
     }
@@ -457,7 +463,9 @@ function AIMentor() {
       <div className="flex h-[calc(100vh-8rem)] items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
           <div className="size-12 rounded-full border-4 border-primary border-t-transparent animate-spin" />
-          <p className="text-sm text-muted-foreground animate-pulse">Loading your Sahaayak AI Mentor...</p>
+          <p className="text-sm text-muted-foreground animate-pulse">
+            Loading your Sahaayak AI Mentor...
+          </p>
         </div>
       </div>
     );
@@ -527,8 +535,12 @@ function AIMentor() {
                 {user?.full_name ? user.full_name[0].toUpperCase() : "S"}
               </div>
               <div className="min-w-0">
-                <div className="truncate text-xs font-bold text-foreground">{user?.full_name}</div>
-                <div className="truncate text-[10px] text-muted-foreground">{student.college || "Update college"}</div>
+                <div className="truncate text-xs font-bold text-foreground">
+                  {user?.full_name}
+                </div>
+                <div className="truncate text-[10px] text-muted-foreground">
+                  {student.college || "Update college"}
+                </div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2 text-center">
@@ -536,13 +548,17 @@ function AIMentor() {
                 <div className="text-xs font-extrabold text-primary">
                   {student.cgpa ? student.cgpa.toFixed(1) : "N/A"}
                 </div>
-                <div className="text-[9px] text-muted-foreground mt-0.5">CGPA</div>
+                <div className="text-[9px] text-muted-foreground mt-0.5">
+                  CGPA
+                </div>
               </div>
               <div className="p-2 bg-background/45 rounded-xl border border-border/30">
                 <div className="text-xs font-extrabold text-success">
                   {Math.round(student.profile_completeness)}%
                 </div>
-                <div className="text-[9px] text-muted-foreground mt-0.5">Profile</div>
+                <div className="text-[9px] text-muted-foreground mt-0.5">
+                  Profile
+                </div>
               </div>
             </div>
           </div>
@@ -585,7 +601,9 @@ function AIMentor() {
                 Ask your first question
               </h3>
               <p className="text-muted-foreground text-sm leading-relaxed">
-                I'm your AI Mentor, synced with your Digital Twin context. I can help with career planning, scholarship matches, and academic guidance.
+                I'm your AI Mentor, synced with your Digital Twin context. I can
+                help with career planning, scholarship matches, and academic
+                guidance.
               </p>
             </div>
           )}
@@ -604,7 +622,15 @@ function AIMentor() {
                     : "bg-primary/20 text-primary text-xs"
                 }`}
               >
-                {m.role === "user" ? (user?.full_name ? user.full_name[0].toUpperCase() : "U") : <Sparkles className="size-4" />}
+                {m.role === "user" ? (
+                  user?.full_name ? (
+                    user.full_name[0].toUpperCase()
+                  ) : (
+                    "U"
+                  )
+                ) : (
+                  <Sparkles className="size-4" />
+                )}
               </div>
               <div
                 className={`max-w-[80%] rounded-2xl p-4 text-sm ${
@@ -640,7 +666,9 @@ function AIMentor() {
                     )}
                   </div>
                 ) : (
-                  <div className="whitespace-pre-wrap leading-relaxed">{m.content}</div>
+                  <div className="whitespace-pre-wrap leading-relaxed">
+                    {m.content}
+                  </div>
                 )}
 
                 {/* Sources Citation */}
@@ -651,9 +679,14 @@ function AIMentor() {
                     </p>
                     <ul className="space-y-1.5">
                       {m.sources.map((src, idx) => (
-                        <li key={idx} className="text-xs text-muted-foreground flex items-start gap-2">
+                        <li
+                          key={idx}
+                          className="text-xs text-muted-foreground flex items-start gap-2"
+                        >
                           <span className="mt-1.5 size-1.5 rounded-full bg-primary/60 shrink-0" />
-                          <span>{src.source} {src.page ? `(Page ${src.page})` : ""}</span>
+                          <span>
+                            {src.source} {src.page ? `(Page ${src.page})` : ""}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -661,64 +694,79 @@ function AIMentor() {
                 )}
 
                 {/* Message Action Bar (Copy, Speak, Feedback) */}
-                {(m.role === "ai" || m.role === "assistant") && i >= 0 && !isTyping && (
-                  <div className="flex items-center gap-3.5 mt-4 pt-3 text-muted-foreground border-t border-border/30 text-xs">
-                    <button
-                      onClick={() => copyToClipboard(m.content)}
-                      className="hover:text-primary transition-colors flex items-center gap-1"
-                      title="Copy message"
-                    >
-                      <Copy className="size-3.5" /> Copy
-                    </button>
+                {(m.role === "ai" || m.role === "assistant") &&
+                  i >= 0 &&
+                  !isTyping && (
+                    <div className="flex items-center gap-3.5 mt-4 pt-3 text-muted-foreground border-t border-border/30 text-xs">
+                      <button
+                        onClick={() => copyToClipboard(m.content)}
+                        className="hover:text-primary transition-colors flex items-center gap-1"
+                        title="Copy message"
+                      >
+                        <Copy className="size-3.5" /> Copy
+                      </button>
 
-                    {/* Integrated TTS Speak Button next to message */}
-                    <button
-                      onClick={() => handleSpeakText(m.content, i)}
-                      className={`transition-colors flex items-center gap-1 ${
-                        speakingMsgIdx === i ? "text-success font-bold" : "hover:text-primary"
-                      }`}
-                      title={speakingMsgIdx === i ? "Stop reading" : "Read aloud"}
-                    >
-                      {speakingMsgIdx === i ? (
-                        <>
-                          <VolumeX className="size-3.5 text-success animate-pulse" /> Stop
-                        </>
-                      ) : (
-                        <>
-                          <Volume2 className="size-3.5" /> Speak
-                        </>
-                      )}
-                    </button>
+                      {/* Integrated TTS Speak Button next to message */}
+                      <button
+                        onClick={() => handleSpeakText(m.content, i)}
+                        className={`transition-colors flex items-center gap-1 ${
+                          speakingMsgIdx === i
+                            ? "text-success font-bold"
+                            : "hover:text-primary"
+                        }`}
+                        title={
+                          speakingMsgIdx === i ? "Stop reading" : "Read aloud"
+                        }
+                      >
+                        {speakingMsgIdx === i ? (
+                          <>
+                            <VolumeX className="size-3.5 text-success animate-pulse" />{" "}
+                            Stop
+                          </>
+                        ) : (
+                          <>
+                            <Volume2 className="size-3.5" /> Speak
+                          </>
+                        )}
+                      </button>
 
-                    <div className="flex-1"></div>
-                    <button className="hover:text-success transition-colors" title="Thumbs up">
-                      <ThumbsUp className="size-3.5" />
-                    </button>
-                    <button className="hover:text-destructive transition-colors" title="Thumbs down">
-                      <ThumbsDown className="size-3.5" />
-                    </button>
-                  </div>
-                )}
+                      <div className="flex-1"></div>
+                      <button
+                        className="hover:text-success transition-colors"
+                        title="Thumbs up"
+                      >
+                        <ThumbsUp className="size-3.5" />
+                      </button>
+                      <button
+                        className="hover:text-destructive transition-colors"
+                        title="Thumbs down"
+                      >
+                        <ThumbsDown className="size-3.5" />
+                      </button>
+                    </div>
+                  )}
 
                 {/* Followups */}
-                {(m.role === "ai" || m.role === "assistant") && m.followups && !isTyping && (
-                  <div className="mt-4 flex flex-col gap-2 border-t border-border/35 pt-3.5">
-                    <p className="text-xs font-semibold text-muted-foreground">
-                      Suggested Follow-ups:
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {m.followups.map((f: string, idx: number) => (
-                        <button
-                          key={idx}
-                          onClick={() => handleSend(f)}
-                          className="rounded-xl border border-border bg-background/50 px-3 py-2 text-xs text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 text-left transition-colors"
-                        >
-                          {f}
-                        </button>
-                      ))}
+                {(m.role === "ai" || m.role === "assistant") &&
+                  m.followups &&
+                  !isTyping && (
+                    <div className="mt-4 flex flex-col gap-2 border-t border-border/35 pt-3.5">
+                      <p className="text-xs font-semibold text-muted-foreground">
+                        Suggested Follow-ups:
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {m.followups.map((f: string, idx: number) => (
+                          <button
+                            key={idx}
+                            onClick={() => handleSend(f)}
+                            className="rounded-xl border border-border bg-background/50 px-3 py-2 text-xs text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 text-left transition-colors"
+                          >
+                            {f}
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
             </div>
           ))}
@@ -790,9 +838,17 @@ function AIMentor() {
                   ? "bg-success/15 border-success text-success animate-pulse shadow-[0_0_12px_var(--success)]/25"
                   : "text-muted-foreground hover:bg-accent/20 hover:text-foreground border-transparent"
               }`}
-              title={isSpeakingAny ? "Stop reading last response" : "Read aloud most recent response"}
+              title={
+                isSpeakingAny
+                  ? "Stop reading last response"
+                  : "Read aloud most recent response"
+              }
             >
-              {isSpeakingAny ? <VolumeX className="size-4 text-success" /> : <Mic className="size-4" />}
+              {isSpeakingAny ? (
+                <VolumeX className="size-4 text-success" />
+              ) : (
+                <Mic className="size-4" />
+              )}
             </button>
 
             <button

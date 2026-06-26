@@ -127,6 +127,7 @@ function Card({ match }: { match: any }) {
       <Button
         className="w-full rounded-full gap-2 shadow-glow"
         disabled={!is_eligible}
+        onClick={() => window.open(scholarship.url || "https://scholarships.gov.in", "_blank")}
       >
         Apply Now <ExternalLink className="size-3" />
       </Button>

@@ -84,7 +84,8 @@ function scoreColor(score: number): string {
 }
 
 function riskLabel(score: number): { text: string; color: string } {
-  if (score <= 25) return { text: "Low Risk", color: "var(--success, #22c55e)" };
+  if (score <= 25)
+    return { text: "Low Risk", color: "var(--success, #22c55e)" };
   if (score <= 50) return { text: "Moderate", color: "orange" };
   return { text: "High Risk", color: "var(--destructive, #ef4444)" };
 }
@@ -137,7 +138,7 @@ function DigitalTwin() {
         // Refresh history after recalculation
         TwinAPI.getHistory()
           .then((h) => h.data && setHistory(h.data))
-          .catch(() => { });
+          .catch(() => {});
       }
     } catch (err: any) {
       setError(err?.message || "Recalculation failed.");
@@ -233,23 +234,27 @@ function DigitalTwin() {
   const risk = riskLabel(twin.risk_score);
 
   // Chart data from history (or just current snapshot)
-  const trendData = history.length > 0
-    ? history.map((h, i) => ({
-      label: h.created_at
-        ? new Date(h.created_at).toLocaleDateString("en", { month: "short", day: "numeric" })
-        : `#${i + 1}`,
-      success: Math.round(h.success_score),
-      academic: Math.round(h.academic_score),
-      career: Math.round(h.career_readiness),
-    }))
-    : [
-      {
-        label: "Now",
-        success: Math.round(twin.success_score),
-        academic: Math.round(twin.academic_score),
-        career: Math.round(twin.career_readiness),
-      },
-    ];
+  const trendData =
+    history.length > 0
+      ? history.map((h, i) => ({
+          label: h.created_at
+            ? new Date(h.created_at).toLocaleDateString("en", {
+                month: "short",
+                day: "numeric",
+              })
+            : `#${i + 1}`,
+          success: Math.round(h.success_score),
+          academic: Math.round(h.academic_score),
+          career: Math.round(h.career_readiness),
+        }))
+      : [
+          {
+            label: "Now",
+            success: Math.round(twin.success_score),
+            academic: Math.round(twin.academic_score),
+            career: Math.round(twin.career_readiness),
+          },
+        ];
 
   return (
     <div className="space-y-4">
@@ -340,7 +345,10 @@ function DigitalTwin() {
 
       {/* ── Row 1: Radar + Trend Chart ── */}
       <div className="grid gap-4 lg:grid-cols-2">
-        <Card title="Readiness Map" icon={<Compass className="size-4 text-primary" />}>
+        <Card
+          title="Readiness Map"
+          icon={<Compass className="size-4 text-primary" />}
+        >
           <div className="h-[280px] w-full">
             <ResponsiveContainer>
               <RadarChart data={radarData} outerRadius="70%">
@@ -385,8 +393,16 @@ function DigitalTwin() {
               >
                 <defs>
                   <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.4} />
-                    <stop offset="100%" stopColor="var(--primary)" stopOpacity={0} />
+                    <stop
+                      offset="0%"
+                      stopColor="var(--primary)"
+                      stopOpacity={0.4}
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor="var(--primary)"
+                      stopOpacity={0}
+                    />
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke="var(--border)" vertical={false} />
@@ -474,13 +490,19 @@ function DigitalTwin() {
             </div>
           </div>
           <p className="mt-2 text-center text-xs text-muted-foreground">
-            Based on your self-assessment: confidence, motivation & communication
+            Based on your self-assessment: confidence, motivation &
+            communication
           </p>
         </Card>
 
         <Card
           title="Financial Stability"
-          icon={<ShieldCheck className="size-4" style={{ color: scoreColor(twin.financial_stability) }} />}
+          icon={
+            <ShieldCheck
+              className="size-4"
+              style={{ color: scoreColor(twin.financial_stability) }}
+            />
+          }
         >
           <div className="flex h-[200px] flex-col justify-center gap-5">
             <div>
@@ -583,13 +605,36 @@ function DigitalTwin() {
           </div>
         </Card>
 
-        <Card title="Quick Actions" icon={<Zap className="size-4 text-primary" />}>
+        <Card
+          title="Quick Actions"
+          icon={<Zap className="size-4 text-primary" />}
+        >
           <div className="space-y-2">
-            <ActionLink to="/ai-mentor" label="Ask AI Mentor" icon={<Sparkles className="size-4" />} />
-            <ActionLink to="/career-gps" label="Open Career GPS" icon={<Compass className="size-4" />} />
-            <ActionLink to="/scholarships" label="Browse Scholarships" icon={<ShieldCheck className="size-4" />} />
-            <ActionLink to="/mentors" label="Find a Mentor" icon={<HeartPulse className="size-4" />} />
-            <ActionLink to="/settings" label="Update Profile" icon={<Target className="size-4" />} />
+            <ActionLink
+              to="/ai-mentor"
+              label="Ask AI Mentor"
+              icon={<Sparkles className="size-4" />}
+            />
+            <ActionLink
+              to="/career-gps"
+              label="Open Career GPS"
+              icon={<Compass className="size-4" />}
+            />
+            <ActionLink
+              to="/scholarships"
+              label="Browse Scholarships"
+              icon={<ShieldCheck className="size-4" />}
+            />
+            <ActionLink
+              to="/mentors"
+              label="Find a Mentor"
+              icon={<HeartPulse className="size-4" />}
+            />
+            <ActionLink
+              to="/settings"
+              label="Update Profile"
+              icon={<Target className="size-4" />}
+            />
           </div>
         </Card>
       </div>

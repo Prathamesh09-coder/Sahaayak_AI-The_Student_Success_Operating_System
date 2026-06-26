@@ -42,7 +42,10 @@ export function Topbar() {
   // Close profile dropdown on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+      if (
+        profileRef.current &&
+        !profileRef.current.contains(e.target as Node)
+      ) {
         setProfileOpen(false);
       }
     };
@@ -226,7 +229,9 @@ export function Topbar() {
                   <div className="mt-2">
                     <div className="flex justify-between text-[10px] text-muted-foreground">
                       <span>Profile completeness</span>
-                      <span>{Math.round(student?.profile_completeness ?? 0)}%</span>
+                      <span>
+                        {Math.round(student?.profile_completeness ?? 0)}%
+                      </span>
                     </div>
                     <div className="mt-1 h-1 w-full overflow-hidden rounded-full bg-muted">
                       <div

@@ -14,8 +14,8 @@ router = APIRouter()
 
 class GenerateRoadmapRequest(BaseModel):
     student_id: str
-    career_id: Optional[str] = None
-    existing_skills: Optional[List[str]] = None
+    career_id: str | None = None
+    existing_skills: list[str] | None = None
 
 @router.post("/generate", response_model=APIResponse)
 async def generate_roadmap(request: GenerateRoadmapRequest, db: AsyncSession = Depends(get_db)):

@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from app.models.intervention import Intervention, InterventionCategory
 from app.models.success_index import SuccessIndex
 from app.services.roadmap_service import resolve_student

@@ -26,7 +26,7 @@ const safeLocalStorage = {
     } catch (e) {
       console.error(e);
     }
-  }
+  },
 };
 
 interface RequestOptions extends RequestInit {
@@ -105,7 +105,10 @@ export async function fetchAPI<T = any>(
     const json = await response.json().catch(() => ({}));
 
     // Handle token refresh on 401 Unauthorized
-    const isAuthRoute = endpoint.includes("/auth/login") || endpoint.includes("/auth/signup") || endpoint.includes("/auth/refresh");
+    const isAuthRoute =
+      endpoint.includes("/auth/login") ||
+      endpoint.includes("/auth/signup") ||
+      endpoint.includes("/auth/refresh");
     if (response.status === 401 && !options._retry && !isAuthRoute) {
       logDev("Encountered 401, checking refresh token...");
 
@@ -176,7 +179,9 @@ export async function fetchAPI<T = any>(
 
     if (!response.ok) {
       const errMsg =
-        json.message || json.detail || `Request failed with status ${response.status}`;
+        json.message ||
+        json.detail ||
+        `Request failed with status ${response.status}`;
       logDev(`Request failed: ${errMsg}`);
       if (options.showToast !== false) {
         toast.error(errMsg);
@@ -304,12 +309,25 @@ export const ScholarshipAPI = {
     API.get(`/scholarships/${scholarshipId}`),
 };
 
+export const ResumeAPI = {
+  analyze: async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await fetch(`${API_BASE_URL}/resume/analyze`, {
+      method: "POST",
+      body: formData,
+      // Note: Do not set Content-Type, fetch sets it automatically with the boundary for FormData
+    });
+    return response.json();
+  },
+};
+
 export const MentorAPI = {
   getRecommended: (studentId: string) =>
     API.get(`/mentors/recommended?student_id=${studentId}`),
   getDetails: (mentorId: string) => API.get(`/mentors/${mentorId}`),
   bookSession: (mentorId: string, studentId: string) =>
-    API.post(`/sessions/book?student_id=${studentId}`, { mentor_id: mentorId }),
+    API.post(`/mentors/request-session?student_id=${studentId}&mentor_id=${mentorId}`),
 };
 
 export const CommunityAPI = {
@@ -394,4 +412,3 @@ export const KnowledgeGraphAPI = {
   generateGraph: (studentId: string) =>
     API.post(`/knowledge-graph/generate`, { student_id: studentId }),
 };
-

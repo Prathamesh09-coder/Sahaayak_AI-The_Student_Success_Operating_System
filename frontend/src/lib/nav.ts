@@ -18,6 +18,7 @@ import {
   Settings,
   BrainCircuit,
   User,
+  Accessibility,
 } from "lucide-react";
 
 export type NavItem = {
@@ -48,6 +49,7 @@ export const NAV: NavItem[] = [
     icon: Map,
     group: "Core",
   },
+  { label: "Switch to Disability Mode", to: "/accessibility", icon: Accessibility, group: "Core" },
 
   {
     label: "Opportunities",

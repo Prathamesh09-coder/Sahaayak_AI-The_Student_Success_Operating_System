@@ -1,7 +1,7 @@
 from typing import Optional, List
 from sqlalchemy import String, Float, ForeignKey, DateTime
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy import String, Float, ForeignKey, DateTime, JSON
 from app.models.base import Base
 from datetime import datetime, timezone
 
@@ -18,6 +18,6 @@ class DigitalTwin(Base):
     risk_score: Mapped[float] = mapped_column(Float, default=0.0)
     success_score: Mapped[float] = mapped_column(Float, default=0.0)
     
-    ai_insights: Mapped[Optional[list]] = mapped_column(JSONB, default=[])
+    ai_insights: Mapped[Optional[list]] = mapped_column(JSON, default=[])
     
     last_updated: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)

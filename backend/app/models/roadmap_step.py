@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, Integer, Text, Boolean, Float, ForeignKey
 from sqlalchemy.orm import relationship
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy import JSON
 import uuid
 from app.models.base import Base
 
@@ -21,6 +21,6 @@ class RoadmapStep(Base):
     is_mandatory = Column(Boolean, default=True)
 
     status = Column(String, default="pending") # pending, in_progress, completed
-    resource_links = Column(JSONB, nullable=True) # List of URLs or resource dicts
+    resource_links = Column(JSON, nullable=True) # List of URLs or resource dicts
 
     roadmap = relationship("Roadmap", back_populates="steps")

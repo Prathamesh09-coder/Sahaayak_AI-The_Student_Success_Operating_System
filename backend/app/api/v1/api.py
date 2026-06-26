@@ -1,5 +1,5 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from app.api.v1 import auth, users, health, onboarding, digital_twin, dashboard, chat, career_gps, opportunities, scholarships, interventions, mentors, mentor, community, sessions, success_stories, voice, parent, accessibility, success, analytics, predictions, admin, knowledge_graph
+from app.api.v1 import auth, users, health, onboarding, digital_twin, dashboard, chat, career_gps, opportunities, scholarships, interventions, mentors, mentor, community, sessions, success_stories, voice, resume, parent, accessibility, success, analytics, predictions, admin, knowledge_graph
 
 api_router = APIRouter()
 
@@ -20,6 +20,7 @@ api_router.include_router(community.router, prefix="/community", tags=["communit
 api_router.include_router(sessions.router, prefix="/sessions", tags=["sessions"])
 api_router.include_router(success_stories.router, prefix="/success-stories", tags=["success_stories"])
 api_router.include_router(voice.router, prefix="/voice", tags=["voice"])
+api_router.include_router(resume.router, prefix="/resume", tags=["resume"])
 api_router.include_router(parent.router, prefix="/parent", tags=["parent"])
 api_router.include_router(accessibility.router, prefix="/accessibility", tags=["accessibility"])
 api_router.include_router(success.router, prefix="/success", tags=["success"])

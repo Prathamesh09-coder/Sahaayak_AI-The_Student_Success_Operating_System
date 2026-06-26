@@ -10,9 +10,9 @@ class MentorMatchingService:
         score = 0
         reasons = []
         
-        if student.get("career_goal") == mentor.get("career_goal"):
+        if student.get("career_goal") and student.get("career_goal").lower() in mentor.get("career_goal", "").lower():
             score += 30
-            reasons.append("Same career goal")
+            reasons.append("Shares your career goals")
             
         student_skills = set(student.get("skills", []))
         mentor_skills = set(mentor.get("skills", []))
@@ -34,7 +34,7 @@ class MentorMatchingService:
             
         if student.get("location") == mentor.get("location"):
             score += 10
-            reasons.append("Same location")
+            reasons.append("Based in your region")
             
         score += 5 # Mock availability match
         
@@ -44,7 +44,9 @@ class MentorMatchingService:
             "designation": mentor.get("designation"),
             "company": mentor.get("company"),
             "match_score": score,
-            "reason": ", ".join(reasons)
+            "reason": " • ".join(reasons) if reasons else "General professional network match",
+            "languages": mentor.get("languages", ["English"]),
+            "availability": mentor.get("availability", "Flexible")
         }
 
     async def get_recommended_mentors(self, student: dict, mentors: list) -> list:

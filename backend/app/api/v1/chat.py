@@ -7,7 +7,6 @@ from app.schemas.chat import ChatRequest, ConversationResponse, MessageFeedbackR
 from app.repositories import conversation_repository, message_repository
 from app.realtime.websocket_manager import manager, EventType
 from app.schemas.base import APIResponse
-from fastapi_limiter.depends import RateLimiter
 import json
 import asyncio
 

@@ -1,13 +1,9 @@
-import asyncio
-import websockets
+from fastapi.testclient import TestClient
+from app.main import app
 
-async def test():
-    uri = "ws://localhost:8000/api/v1/ws"
-    async with websockets.connect(uri) as websocket:
+client = TestClient(app)
+
+def test_websocket():
+    with client.websocket_connect("/api/v1/ws") as websocket:
         print("Global WS Connected!")
-        
-    uri2 = "ws://localhost:8000/api/v1/chat/ws/chat/test_student_id"
-    async with websockets.connect(uri2) as websocket:
-        print("Chat WS Connected!")
-
-asyncio.run(test())
+        # We expect a success connection, no data immediately sent

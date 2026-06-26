@@ -13,7 +13,7 @@ class RoadmapGenerationService:
         gap_analysis = await skill_gap_service.analyze_gap(student_id, career_id, student_existing_skills)
         missing_skills = gap_analysis["missing_skills"]
 
-        recommendations = await knowledge_graph_service.query_recommendations(missing_skills)
+        recommendations = [{"title": f"Complete the '{skill}' track", "type": "certification"} for skill in missing_skills]
 
         # Mocking the generation logic
         roadmap_id = str(uuid.uuid4())

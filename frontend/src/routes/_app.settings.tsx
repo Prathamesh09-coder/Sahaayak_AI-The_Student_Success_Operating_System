@@ -206,17 +206,25 @@ function Settings() {
             >
               <div className="space-y-6">
                 <div className="rounded-2xl bg-primary/5 border border-primary/20 p-4">
-                  <h4 className="font-semibold mb-2">Dedicated Profile Workspace</h4>
+                  <h4 className="font-semibold mb-2">
+                    Dedicated Profile Workspace
+                  </h4>
                   <p className="text-sm text-muted-foreground">
-                    Sahaayak AI now features a dedicated Profile workspace. Here, you can view your real-time completeness score, follow a guided checklist, and edit your academic and career baseline details.
+                    Sahaayak AI now features a dedicated Profile workspace.
+                    Here, you can view your real-time completeness score, follow
+                    a guided checklist, and edit your academic and career
+                    baseline details.
                   </p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 bg-background/25 border border-border/30 rounded-2xl">
                   <div>
-                    <div className="text-sm font-semibold">Manage Profile Details</div>
+                    <div className="text-sm font-semibold">
+                      Manage Profile Details
+                    </div>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Update your name, age, CGPA, dream career, skills, and household income.
+                      Update your name, age, CGPA, dream career, skills, and
+                      household income.
                     </p>
                   </div>
                   <Link

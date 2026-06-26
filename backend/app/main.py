@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-import redis.asyncio as redis
 from contextlib import asynccontextmanager
 
 from app.core.config import settings
@@ -14,18 +13,9 @@ from app.core.exceptions import BaseAPIException
 async def lifespan(app: FastAPI):
     # Setup logging
     setup_logging()
+    # Startup log
     logger.info("Starting up Sahaayak AI backend...")
-    
-    # Initialize Redis connection
-    app.state.redis = redis.from_url(settings.REDIS_URL, encoding="utf-8", decode_responses=True)
-    try:
-        await app.state.redis.ping()
-        logger.info("Successfully connected to Redis")
-        from fastapi_limiter import FastAPILimiter
-        await FastAPILimiter.init(app.state.redis)
-        logger.info("FastAPILimiter initialized")
-    except Exception as e:
-        logger.error(f"Failed to connect to Redis: {e}")
+
         
     # Start APScheduler
     from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -40,10 +30,6 @@ async def lifespan(app: FastAPI):
     # Clean up
     app.state.scheduler.shutdown()
     logger.info("APScheduler shutdown")
-    
-    # Clean up Redis connection on shutdown
-    logger.info("Shutting down Sahaayak AI backend...")
-    await app.state.redis.close()
 
 
 app = FastAPI(

@@ -76,7 +76,11 @@ function ProfilePage() {
 
       // Map year number to string
       const yearMapReverse: Record<number, string> = {
-        1: "1st year", 2: "2nd year", 3: "3rd year", 4: "4th year", 5: "PG"
+        1: "1st year",
+        2: "2nd year",
+        3: "3rd year",
+        4: "4th year",
+        5: "PG",
       };
       setProfYear(yearMapReverse[sp.year] || "1st year");
       setProfCgpa(sp.cgpa || 0);
@@ -85,7 +89,8 @@ function ProfilePage() {
 
       // Map income back to option
       const incomeVal = fp.annual_income || 0;
-      const matchingIncome = INCOME_OPTIONS.find(o => o.value === incomeVal) || INCOME_OPTIONS[0];
+      const matchingIncome =
+        INCOME_OPTIONS.find((o) => o.value === incomeVal) || INCOME_OPTIONS[0];
       setProfIncome(matchingIncome.key);
 
       setProfDreamCareer(cp.dream_career || "");
@@ -104,7 +109,14 @@ function ProfilePage() {
       {
         label: "Personal & Academic Info",
         desc: "Name, Age, Language, College, Branch, Year, CGPA",
-        done: !!(user?.full_name && sp.age && sp.college && sp.branch && sp.year && sp.cgpa),
+        done: !!(
+          user?.full_name &&
+          sp.age &&
+          sp.college &&
+          sp.branch &&
+          sp.year &&
+          sp.cgpa
+        ),
       },
       {
         label: "Family & Economic Background",
@@ -131,7 +143,11 @@ function ProfilePage() {
     try {
       // 1. Map year
       const yearMap: Record<string, number> = {
-        "1st year": 1, "2nd year": 2, "3rd year": 3, "4th year": 4, "PG": 5,
+        "1st year": 1,
+        "2nd year": 2,
+        "3rd year": 3,
+        "4th year": 4,
+        PG: 5,
       };
 
       // 2. Map income
@@ -155,8 +171,14 @@ function ProfilePage() {
       });
 
       // 5. Save Career Profile
-      const skillsArray = profSkills.split(",").map(s => s.trim()).filter(Boolean);
-      const interestsArray = profInterests.split(",").map(i => i.trim()).filter(Boolean);
+      const skillsArray = profSkills
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      const interestsArray = profInterests
+        .split(",")
+        .map((i) => i.trim())
+        .filter(Boolean);
       await OnboardingAPI.saveCareer({
         dream_career: profDreamCareer,
         skills: skillsArray,
@@ -171,7 +193,9 @@ function ProfilePage() {
       await refetchUser();
       await refetchProfileData();
 
-      toast.success("Profile saved and Digital Twin recalculated in real-time! 🚀");
+      toast.success(
+        "Profile saved and Digital Twin recalculated in real-time! 🚀",
+      );
     } catch (err: any) {
       console.error(err);
       toast.error(err?.message || "Failed to save profile. Please try again.");
@@ -195,9 +219,12 @@ function ProfilePage() {
               <User className="size-7" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight md:text-3xl">My Profile</h1>
+              <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
+                My Profile
+              </h1>
               <p className="text-sm text-muted-foreground">
-                Manage your credentials, academic details, and career aspirations in real-time.
+                Manage your credentials, academic details, and career
+                aspirations in real-time.
               </p>
             </div>
           </div>
@@ -249,7 +276,8 @@ function ProfilePage() {
             </div>
 
             <p className="mt-4 text-xs text-muted-foreground">
-              A 100% complete profile improves matching accuracy for scholarships and career path roadmaps by up to 4x.
+              A 100% complete profile improves matching accuracy for
+              scholarships and career path roadmaps by up to 4x.
             </p>
           </section>
 
@@ -272,10 +300,14 @@ function ProfilePage() {
                     <AlertCircle className="size-4 mt-0.5 shrink-0 text-muted-foreground" />
                   )}
                   <div>
-                    <div className={`text-xs font-bold ${item.done ? "text-success" : "text-foreground"}`}>
+                    <div
+                      className={`text-xs font-bold ${item.done ? "text-success" : "text-foreground"}`}
+                    >
                       {item.label}
                     </div>
-                    <div className="text-[10px] text-muted-foreground mt-0.5">{item.desc}</div>
+                    <div className="text-[10px] text-muted-foreground mt-0.5">
+                      {item.desc}
+                    </div>
                   </div>
                 </li>
               ))}
@@ -296,12 +328,16 @@ function ProfilePage() {
               <section className="glass shadow-soft rounded-3xl p-5 md:p-6">
                 <header className="mb-4 flex items-center gap-2">
                   <GraduationCap className="size-4 text-primary" />
-                  <h3 className="text-sm font-semibold">1. Personal & Academic Details</h3>
+                  <h3 className="text-sm font-semibold">
+                    1. Personal & Academic Details
+                  </h3>
                 </header>
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground">Full Name</label>
+                    <label className="text-xs font-semibold text-muted-foreground">
+                      Full Name
+                    </label>
                     <input
                       type="text"
                       required
@@ -312,7 +348,9 @@ function ProfilePage() {
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground">Age</label>
+                    <label className="text-xs font-semibold text-muted-foreground">
+                      Age
+                    </label>
                     <input
                       type="number"
                       required
@@ -323,7 +361,9 @@ function ProfilePage() {
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground">College Name</label>
+                    <label className="text-xs font-semibold text-muted-foreground">
+                      College Name
+                    </label>
                     <input
                       type="text"
                       required
@@ -334,7 +374,9 @@ function ProfilePage() {
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground">Branch / Specialization</label>
+                    <label className="text-xs font-semibold text-muted-foreground">
+                      Branch / Specialization
+                    </label>
                     <input
                       type="text"
                       required
@@ -345,7 +387,9 @@ function ProfilePage() {
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground">Academic Year</label>
+                    <label className="text-xs font-semibold text-muted-foreground">
+                      Academic Year
+                    </label>
                     <select
                       value={profYear}
                       onChange={(e) => setProfYear(e.target.value)}
@@ -359,7 +403,9 @@ function ProfilePage() {
                     </select>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground">CGPA / Percentage</label>
+                    <label className="text-xs font-semibold text-muted-foreground">
+                      CGPA / Percentage
+                    </label>
                     <input
                       type="number"
                       step="0.01"
@@ -371,7 +417,9 @@ function ProfilePage() {
                     />
                   </div>
                   <div className="space-y-1.5 sm:col-span-2">
-                    <label className="text-xs font-semibold text-muted-foreground">Preferred Communication Language</label>
+                    <label className="text-xs font-semibold text-muted-foreground">
+                      Preferred Communication Language
+                    </label>
                     <input
                       type="text"
                       required
@@ -388,12 +436,16 @@ function ProfilePage() {
               <section className="glass shadow-soft rounded-3xl p-5 md:p-6">
                 <header className="mb-4 flex items-center gap-2">
                   <Users className="size-4 text-primary" />
-                  <h3 className="text-sm font-semibold">2. Family & Economic Status</h3>
+                  <h3 className="text-sm font-semibold">
+                    2. Family & Economic Status
+                  </h3>
                 </header>
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground">Annual Household Income</label>
+                    <label className="text-xs font-semibold text-muted-foreground">
+                      Annual Household Income
+                    </label>
                     <select
                       value={profIncome}
                       onChange={(e) => setProfIncome(e.target.value)}
@@ -408,8 +460,12 @@ function ProfilePage() {
                   </div>
                   <div className="flex items-center justify-between p-3.5 bg-background/30 border border-border/50 rounded-2xl sm:mt-5">
                     <div>
-                      <div className="text-xs font-bold">First-Generation Learner</div>
-                      <div className="text-[10px] text-muted-foreground mt-0.5">First in family to attend college</div>
+                      <div className="text-xs font-bold">
+                        First-Generation Learner
+                      </div>
+                      <div className="text-[10px] text-muted-foreground mt-0.5">
+                        First in family to attend college
+                      </div>
                     </div>
                     <input
                       type="checkbox"
@@ -425,12 +481,16 @@ function ProfilePage() {
               <section className="glass shadow-soft rounded-3xl p-5 md:p-6">
                 <header className="mb-4 flex items-center gap-2">
                   <Compass className="size-4 text-primary" />
-                  <h3 className="text-sm font-semibold">3. Career Dreams & Skill Baseline</h3>
+                  <h3 className="text-sm font-semibold">
+                    3. Career Dreams & Skill Baseline
+                  </h3>
                 </header>
 
                 <div className="grid gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground">Dream Career Path</label>
+                    <label className="text-xs font-semibold text-muted-foreground">
+                      Dream Career Path
+                    </label>
                     <input
                       type="text"
                       required
@@ -441,7 +501,9 @@ function ProfilePage() {
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground">Skills (Comma-separated)</label>
+                    <label className="text-xs font-semibold text-muted-foreground">
+                      Skills (Comma-separated)
+                    </label>
                     <textarea
                       value={profSkills}
                       onChange={(e) => setProfSkills(e.target.value)}
@@ -450,7 +512,9 @@ function ProfilePage() {
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-muted-foreground">Interests (Comma-separated)</label>
+                    <label className="text-xs font-semibold text-muted-foreground">
+                      Interests (Comma-separated)
+                    </label>
                     <textarea
                       value={profInterests}
                       onChange={(e) => setProfInterests(e.target.value)}
