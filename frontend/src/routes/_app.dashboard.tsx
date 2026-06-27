@@ -578,46 +578,30 @@ function Dashboard() {
 
         {/* Dynamic Glassmorphic Tab Bar */}
         <div className="flex flex-wrap items-center gap-1.5 rounded-2xl bg-background/50 p-1 border border-border/40">
-          <button
-            onClick={() => setActiveTab("overview")}
-            className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
-              activeTab === "overview"
-                ? "bg-card text-foreground shadow-soft border border-border/30"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
+          <Link
+            to="/dashboard"
+            className="flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all bg-card text-foreground shadow-soft border border-border/30"
           >
             <LayoutDashboard className="size-4" /> Overview
-          </button>
-          <button
-            onClick={() => setActiveTab("profile")}
-            className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
-              activeTab === "profile"
-                ? "bg-card text-foreground shadow-soft border border-border/30"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
+          </Link>
+          <Link
+            to="/profile"
+            className="flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all text-muted-foreground hover:text-foreground"
           >
             <User className="size-4" /> My Profile
-          </button>
-          <button
-            onClick={() => setActiveTab("resume")}
-            className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
-              activeTab === "resume"
-                ? "bg-card text-foreground shadow-soft border border-border/30"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
+          </Link>
+          <Link
+            to="/resume"
+            className="flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all text-muted-foreground hover:text-foreground"
           >
             <FileText className="size-4" /> Resume AI
-          </button>
-          <button
-            onClick={() => setActiveTab("chat")}
-            className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
-              activeTab === "chat"
-                ? "bg-card text-foreground shadow-soft border border-border/30"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
+          </Link>
+          <Link
+            to="/ai-mentor"
+            className="flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all text-muted-foreground hover:text-foreground"
           >
             <Sparkles className="size-4" /> Ask AI Mentor
-          </button>
+          </Link>
         </div>
       </header>
 

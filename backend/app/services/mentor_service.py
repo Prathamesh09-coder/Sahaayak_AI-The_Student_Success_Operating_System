@@ -40,7 +40,7 @@ Never:
 If insufficient information exists, explicitly state:
 "I currently do not have enough verified information." """
 
-async def handle_chat_message(db: AsyncSession, student_id: str, conversation_id: str, user_message: str):
+async def handle_chat_message(db: AsyncSession, student_id: str, conversation_id: str, user_message: str, language: str = "en"):
     logger.info(f"Starting chat message pipeline for user {student_id}, conversation {conversation_id}")
     
     # Send started event
@@ -133,7 +133,7 @@ async def handle_chat_message(db: AsyncSession, student_id: str, conversation_id
         await memory_service.store_summary(conversation_id, summary)
         
     # Language detection/translation
-    lang = language_service.detect_language(user_message)
+    lang = language or language_service.detect_language(user_message)
     if language_service.requires_translation(lang):
         user_message_to_process = await language_service.translate_to_english(user_message, lang)
     else:
@@ -157,7 +157,7 @@ async def handle_chat_message(db: AsyncSession, student_id: str, conversation_id
         
     if language_service.requires_translation(lang):
         full_response = await language_service.translate_from_english(full_response, lang)
-        await manager.broadcast(json.dumps({"type": "token.stream", "content": full_response}))
+        await manager.broadcast(json.dumps({"type": "token.stream", "content": full_response, "replace": True}))
 
     # 12. Save Assistant Message
     logger.info("Step 12 Save Assistant Message")

@@ -62,6 +62,11 @@ interface Conversation {
 
 function AIMentor() {
   const { user, student, isLoading } = useUser();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConversationId, setActiveConversationId] = useState<
     string | null
@@ -147,6 +152,7 @@ function AIMentor() {
               id: m.id,
               role: m.role === "assistant" ? "ai" : m.role,
               content: m.content,
+              language: m.language,
               sources: m.retrieved_sources,
               followups: m.followups,
             })),
@@ -236,7 +242,7 @@ function AIMentor() {
                 const updated = [...prev];
                 updated[updated.length - 1] = {
                   ...lastMsg,
-                  content: lastMsg.content + data.content,
+                  content: data.replace ? data.content : lastMsg.content + data.content,
                 };
                 return updated;
               } else {
@@ -422,6 +428,26 @@ function AIMentor() {
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
 
+    // Map to proper BCP 47 language tag
+    const msgLang = messages[index]?.language || language || "en";
+    if (msgLang === "hi") {
+      utterance.lang = "hi-IN";
+    } else if (msgLang === "mr") {
+      utterance.lang = "mr-IN";
+    } else if (msgLang === "ta") {
+      utterance.lang = "ta-IN";
+    } else if (msgLang === "te") {
+      utterance.lang = "te-IN";
+    } else if (msgLang === "kn") {
+      utterance.lang = "kn-IN";
+    } else if (msgLang === "gu") {
+      utterance.lang = "gu-IN";
+    } else if (msgLang === "bn") {
+      utterance.lang = "bn-IN";
+    } else {
+      utterance.lang = "en-US";
+    }
+
     // Set voice rate slightly slower for clearer educational delivery
     utterance.rate = 0.95;
 
@@ -458,7 +484,7 @@ function AIMentor() {
 
   const isSpeakingAny = speakingMsgIdx !== null;
 
-  if (isLoading) {
+  if (!mounted || isLoading) {
     return (
       <div className="flex h-[calc(100vh-8rem)] items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
@@ -587,6 +613,11 @@ function AIMentor() {
             <option value="en">English</option>
             <option value="hi">Hindi (हिन्दी)</option>
             <option value="mr">Marathi (मराठी)</option>
+            <option value="ta">Tamil (தமிழ்)</option>
+            <option value="te">Telugu (తెలుగు)</option>
+            <option value="kn">Kannada (ಕನ್ನಡ)</option>
+            <option value="gu">Gujarati (ગુજરાતી)</option>
+            <option value="bn">Bengali (বাংলা)</option>
           </select>
         </header>
 

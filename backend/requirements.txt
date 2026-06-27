@@ -33,4 +33,5 @@ sentence-transformers
 scikit-learn
 numpy
 langdetect
-
+edge-tts
+openai

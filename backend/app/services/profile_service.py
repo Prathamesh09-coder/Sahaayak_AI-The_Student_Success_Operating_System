@@ -32,6 +32,11 @@ async def calculate_profile_completeness(db: AsyncSession, student_id: str) -> f
     
     # Clear Redis context cache to force reload of fresh PostgreSQL data for AI features
     await memory_service.invalidate_context_cache(student_id)
+    
+    # Invalidate dashboard overview cache
+    from app.core.redis import redis_client
+    dashboard_cache_key = f"dashboard:{student_profile_id}"
+    await redis_client.delete(dashboard_cache_key)
         
     return score
 

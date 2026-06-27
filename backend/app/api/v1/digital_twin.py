@@ -58,6 +58,10 @@ async def recalculate_twin(
 
     try:
         twin = await digital_twin_service.generate_digital_twin(db, str(student.id))
+        # Invalidate dashboard overview cache
+        from app.core.redis import redis_client
+        dashboard_cache_key = f"dashboard:{student.id}"
+        await redis_client.delete(dashboard_cache_key)
     except Exception as e:
         logger.error(f"[DigitalTwin] Recalculate failed for student {student.id}: {e}")
         raise HTTPException(status_code=500, detail=f"Recalculation failed: {str(e)}")

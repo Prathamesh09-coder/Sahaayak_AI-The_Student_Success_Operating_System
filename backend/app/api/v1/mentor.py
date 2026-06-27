@@ -70,6 +70,7 @@ async def mentor_websocket_endpoint(
             
             if payload.get("event") == "chat.message":
                 user_message = payload.get("message", "")
+                language = payload.get("language", "en")
                 if user_message:
                     # If this is a new conversation, create it in PostgreSQL first
                     if conversation_id.startswith("new_"):
@@ -90,7 +91,7 @@ async def mentor_websocket_endpoint(
                     # Run handle_chat_message with a 120-second timeout
                     try:
                         await asyncio.wait_for(
-                            handle_chat_message(db, student_id, conversation_id, user_message),
+                            handle_chat_message(db, student_id, conversation_id, user_message, language),
                             timeout=120.0
                         )
                     except asyncio.TimeoutError:

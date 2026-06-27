@@ -19,7 +19,7 @@ async def get_dashboard_overview(db: AsyncSession, student_id: str) -> Dashboard
     except Exception:
         pass
 
-    student = await profile_repository.get_student_profile(db, student_id)
+    student = await profile_repository.get_student_profile_by_id(db, student_id)
     twin = await digital_twin_repository.get_digital_twin(db, student_id)
     goals = await profile_repository.get_student_goals(db, student_id)
     

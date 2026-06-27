@@ -15,7 +15,8 @@ router = APIRouter()
 @router.get("/conversations", response_model=APIResponse)
 async def get_conversations(student_id: str, db: AsyncSession = Depends(get_db)):
     conversations = await conversation_repository.get_student_conversations(db, student_id)
-    return APIResponse(success=True, message="Conversations fetched", data=conversations)
+    data = [ConversationResponse.model_validate(c) for c in conversations]
+    return APIResponse(success=True, message="Conversations fetched", data=data)
 
 @router.get("/search", response_model=APIResponse)
 async def search_conversations(q: str = Query(..., min_length=1), student_id: str = Query(...), db: AsyncSession = Depends(get_db)):
@@ -29,7 +30,8 @@ async def search_conversations(q: str = Query(..., min_length=1), student_id: st
     ).order_by(Conversation.last_message_at.desc())
     result = await db.execute(query)
     res = result.scalars().all()
-    return APIResponse(success=True, message="Search results fetched", data=res)
+    data = [ConversationResponse.model_validate(c) for c in res]
+    return APIResponse(success=True, message="Search results fetched", data=data)
 
 @router.post("/conversations/{conversation_id}/pin", response_model=APIResponse)
 async def pin_conversation(conversation_id: str, db: AsyncSession = Depends(get_db)):
@@ -61,7 +63,24 @@ async def get_conversation_history(conversation_id: str, db: AsyncSession = Depe
     if conversation_id.startswith("new_"):
         return APIResponse(success=True, message="New conversation history initialized", data=[])
     messages = await message_repository.get_conversation_history(db, conversation_id)
-    return APIResponse(success=True, message="Conversation history fetched", data=messages)
+    
+    from app.schemas.chat import MessageResponse
+    data = []
+    for m in messages:
+        try:
+            data.append(MessageResponse.model_validate(m))
+        except Exception:
+            data.append({
+                "id": getattr(m, "id", None),
+                "role": m.role,
+                "content": m.content,
+                "language": getattr(m, "language", "en"),
+                "retrieved_sources": getattr(m, "retrieved_sources", None),
+                "created_at": getattr(m, "created_at", None),
+                "feedback_score": getattr(m, "feedback_score", None),
+                "feedback_comment": getattr(m, "feedback_comment", None)
+            })
+    return APIResponse(success=True, message="Conversation history fetched", data=data)
 
 @router.delete("/conversations/{conversation_id}", response_model=APIResponse)
 async def archive_conversation(conversation_id: str, db: AsyncSession = Depends(get_db)):

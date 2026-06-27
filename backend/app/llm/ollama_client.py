@@ -50,7 +50,7 @@ async def generate(prompt: str, system: str = "") -> str:
                         "stream": False
                     },
                     headers=get_headers(),
-                    timeout=60.0
+                    timeout=120.0
                 )
                 if response.status_code == 200:
                     data = response.json()
@@ -83,7 +83,7 @@ async def generate(prompt: str, system: str = "") -> str:
                         "Authorization": f"Bearer {NVIDIA_API_KEY}",
                         "Content-Type": "application/json"
                     },
-                    timeout=30.0
+                    timeout=120.0
                 )
                 if response.status_code == 200:
                     choices = response.json().get("choices", [])
@@ -116,7 +116,7 @@ async def stream(prompt: str, system: str = "") -> AsyncGenerator[str, None]:
                         "stream": True
                     },
                     headers=get_headers(),
-                    timeout=60.0
+                    timeout=120.0
                 ) as response:
                     if response.status_code == 200:
                         ollama_success = True
@@ -161,7 +161,7 @@ async def stream(prompt: str, system: str = "") -> AsyncGenerator[str, None]:
                             "Authorization": f"Bearer {NVIDIA_API_KEY}",
                             "Content-Type": "application/json"
                         },
-                        timeout=60.0
+                        timeout=120.0
                     ) as response:
                         if response.status_code == 200:
                             async for line in response.aiter_lines():

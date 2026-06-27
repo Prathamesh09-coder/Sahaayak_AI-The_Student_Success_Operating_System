@@ -37,7 +37,8 @@ async def save_message(
         "id": str(message.id),
         "role": role,
         "content": content,
-        "language": language
+        "language": language,
+        "retrieved_sources": retrieved_sources
     }
     await redis_client.rpush(cache_key, json.dumps(msg_data))
     await redis_client.expire(cache_key, 86400) # 24 hours
@@ -53,8 +54,11 @@ async def get_conversation_history(db: AsyncSession, conversation_id: str) -> li
         # Convert JSON back to mock Message objects for the service layer
         class MockMessage:
             def __init__(self, d):
+                self.id = d.get("id")
                 self.role = d.get("role")
                 self.content = d.get("content")
+                self.language = d.get("language")
+                self.retrieved_sources = d.get("retrieved_sources")
         return [MockMessage(json.loads(c)) for c in cached]
         
     # Fallback to DB
@@ -65,7 +69,13 @@ async def get_conversation_history(db: AsyncSession, conversation_id: str) -> li
     if messages:
         pipe = redis_client.pipeline()
         for m in messages:
-            msg_data = {"id": str(m.id), "role": m.role, "content": m.content, "language": m.language}
+            msg_data = {
+                "id": str(m.id),
+                "role": m.role,
+                "content": m.content,
+                "language": m.language,
+                "retrieved_sources": m.retrieved_sources
+            }
             pipe.rpush(cache_key, json.dumps(msg_data))
         pipe.expire(cache_key, 86400)
         await pipe.execute()
