@@ -10,7 +10,7 @@ from app.api.v1.api import api_router
 from app.core.exceptions import BaseAPIException
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(fastapi_app: FastAPI):
     # Setup logging
     setup_logging()
     # Startup log
@@ -34,15 +34,15 @@ async def lifespan(app: FastAPI):
     # Start APScheduler
     from apscheduler.schedulers.asyncio import AsyncIOScheduler
     from app.jobs.scheduler import start_scheduler
-    app.state.scheduler = AsyncIOScheduler()
-    start_scheduler(app.state.scheduler)
-    app.state.scheduler.start()
+    fastapi_app.state.scheduler = AsyncIOScheduler()
+    start_scheduler(fastapi_app.state.scheduler)
+    fastapi_app.state.scheduler.start()
     logger.info("APScheduler started")
         
     yield
     
     # Clean up
-    app.state.scheduler.shutdown()
+    fastapi_app.state.scheduler.shutdown()
     logger.info("APScheduler shutdown")
 
 
