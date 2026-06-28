@@ -28,9 +28,9 @@ async def lifespan(fastapi_app: FastAPI):
         if module_name != "base":
             importlib.import_module(f"app.models.{module_name}")
             
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    logger.info("Database tables initialized successfully")
+    # NOTE: We skip create_all here because create_tables.py already handles it before uvicorn starts.
+    # Running it here can cause SQLite locking issues and deadlocks on Render.
+    logger.info("Database tables initialized via create_tables.py")
         
     # Start APScheduler
     from apscheduler.schedulers.asyncio import AsyncIOScheduler

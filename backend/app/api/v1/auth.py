@@ -8,6 +8,11 @@ from app.models.user import User
 
 router = APIRouter()
 
+@router.get("/ping")
+async def ping():
+    return {"ping": "pong"}
+
+
 
 @router.post("/signup")
 async def signup(user_in: UserCreate, db: AsyncSession = Depends(get_db)):
