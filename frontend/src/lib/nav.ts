@@ -49,7 +49,7 @@ export const NAV: NavItem[] = [
     icon: Map,
     group: "Core",
   },
-  { label: "Switch to Disability Mode", to: "/accessibility", icon: Accessibility, group: "Core" },
+  { label: "Switch to Disability Mode", to: "https://lumina-indol-alpha.vercel.app/", icon: Accessibility, group: "Core" },
 
   {
     label: "Opportunities",

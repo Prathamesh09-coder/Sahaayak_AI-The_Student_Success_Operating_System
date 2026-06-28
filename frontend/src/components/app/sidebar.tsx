@@ -54,43 +54,63 @@ export function AppSidebar() {
                     const Icon = item.icon;
                     return (
                       <li key={item.to}>
-                        <Link
-                          to={item.to}
-                          aria-label={item.label}
-                          title={collapsed ? item.label : undefined}
-                          className={cn(
-                            "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
-                            active
-                              ? "text-foreground"
-                              : "text-muted-foreground hover:bg-sidebar-accent hover:text-foreground",
-                            collapsed && "justify-center px-0",
-                          )}
-                          style={
-                            active
-                              ? {
-                                  background:
-                                    "color-mix(in oklab, var(--primary) 18%, transparent)",
-                                }
-                              : undefined
-                          }
-                        >
-                          {active && (
-                            <span
-                              aria-hidden
-                              className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full"
-                              style={{ background: "var(--gradient-primary)" }}
-                            />
-                          )}
-                          <Icon
+                        {item.to.startsWith("http") ? (
+                          <a
+                            href={item.to}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={item.label}
+                            title={collapsed ? item.label : undefined}
                             className={cn(
-                              "size-[18px] shrink-0",
-                              active ? "text-primary" : "text-current",
+                              "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
+                              "text-muted-foreground hover:bg-sidebar-accent hover:text-foreground",
+                              collapsed && "justify-center px-0",
                             )}
-                          />
-                          {!collapsed && (
-                            <span className="truncate">{item.label}</span>
-                          )}
-                        </Link>
+                          >
+                            <Icon className="size-[18px] shrink-0 text-current" />
+                            {!collapsed && (
+                              <span className="truncate">{item.label}</span>
+                            )}
+                          </a>
+                        ) : (
+                          <Link
+                            to={item.to}
+                            aria-label={item.label}
+                            title={collapsed ? item.label : undefined}
+                            className={cn(
+                              "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
+                              active
+                                ? "text-foreground"
+                                : "text-muted-foreground hover:bg-sidebar-accent hover:text-foreground",
+                              collapsed && "justify-center px-0",
+                            )}
+                            style={
+                              active
+                                ? {
+                                    background:
+                                      "color-mix(in oklab, var(--primary) 18%, transparent)",
+                                  }
+                                : undefined
+                            }
+                          >
+                            {active && (
+                              <span
+                                aria-hidden
+                                className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full"
+                                style={{ background: "var(--gradient-primary)" }}
+                              />
+                            )}
+                            <Icon
+                              className={cn(
+                                "size-[18px] shrink-0",
+                                active ? "text-primary" : "text-current",
+                              )}
+                            />
+                            {!collapsed && (
+                              <span className="truncate">{item.label}</span>
+                            )}
+                          </Link>
+                        )}
                       </li>
                     );
                   })}
