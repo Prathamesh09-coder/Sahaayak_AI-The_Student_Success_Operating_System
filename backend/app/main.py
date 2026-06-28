@@ -10,25 +10,40 @@ from app.api.v1.api import api_router
 from app.core.exceptions import BaseAPIException
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(fastapi_app: FastAPI):
     # Setup logging
     setup_logging()
     # Startup log
     logger.info("Starting up Sahaayak AI backend...")
 
+    # Auto-create tables for SQLite deployments
+    from app.db.session import engine
+    from app.models.base import Base
+    import pkgutil
+    import importlib
+    import app.models as db_models
+    
+    # Import all modules so Base.metadata knows about them
+    for _, module_name, _ in pkgutil.iter_modules(db_models.__path__):
+        if module_name != "base":
+            importlib.import_module(f"app.models.{module_name}")
+            
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    logger.info("Database tables initialized successfully")
         
     # Start APScheduler
     from apscheduler.schedulers.asyncio import AsyncIOScheduler
     from app.jobs.scheduler import start_scheduler
-    app.state.scheduler = AsyncIOScheduler()
-    start_scheduler(app.state.scheduler)
-    app.state.scheduler.start()
+    fastapi_app.state.scheduler = AsyncIOScheduler()
+    start_scheduler(fastapi_app.state.scheduler)
+    fastapi_app.state.scheduler.start()
     logger.info("APScheduler started")
         
     yield
     
     # Clean up
-    app.state.scheduler.shutdown()
+    fastapi_app.state.scheduler.shutdown()
     logger.info("APScheduler shutdown")
 
 
@@ -43,6 +58,7 @@ if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.BACKEND_CORS_ORIGINS,
+        allow_origin_regex=r"https://.*\.vercel\.app",
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

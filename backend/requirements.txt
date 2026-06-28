@@ -35,3 +35,4 @@ numpy
 langdetect
 edge-tts
 openai
+aiosqlite
